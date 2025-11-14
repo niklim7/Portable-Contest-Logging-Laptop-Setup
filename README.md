@@ -4,7 +4,7 @@ Project Status: Completed (Ready for Field Deployment)
 
 1. Summary (Product Vision)
 
-This project details the build and configuration of a highly-optimized, low-power portable laptop setup for amateur radio contesting. The primary goal was to create a reliable and efficient system for un-assisted contest logging, prioritizing battery longevity and a minimal resource footprint while retaining the ability to key the radio.
+This project details the build and configuration of a highly-optimized, low-power portable laptop setup for amateur radio contesting. The primary goal was to create a reliable and efficient system for un-assisted contest logging, prioritizing battery longevity and a minimal resource footprint while retaining the ability to key the radio. This involved defining a custom system architecture based on Musl Void Linux and optimizing a complete TUI (Text-User Interface) application stack.
 
 2. System Requirements
 
@@ -18,69 +18,55 @@ Software: Must run a lightweight, efficient logger that can be used in a minimal
 
 Connectivity: Internet (Wi-Fi/Bluetooth) is not required; focus is on un-assisted contesting.
 
-Nice-to-Have: CAT control for frequency/mode logging.
-
-3. Solution: Hardware & Software Stack
+3. Solution: Hardware & Software Architecture
 
 Hardware
 
-Laptop: HP EliteBook 840 G2 (i5-5300U, 16GB RAM, 240GB SSD). Specs are overkill, but it's a robust multi-use machine.
+Laptop: HP EliteBook 840 G2 (i5-5300U, 16GB RAM, 240GB SSD).
 
 Battery: New official HP extended battery.
 
-Radio Interface: A custom-built USB to Serial (FTDI) interface with an optoisolator. The optoisolator is critical to prevent noise transfer from the laptop's switched-mode power supply to the radio's sensitive receiver.
+Radio Interface: Custom-built USB to Serial (FTDI) interface with an optoisolator to prevent noise transfer from the laptop to the radio.
 
-Software Stack
+Operating System & TUI Stack (The Minimalist Architecture)
 
-Operating System: Debian 13 (Trixie), configured to boot into a headless TTY (terminal) environment to conserve maximum power.
+Architecture: Void Linux (musl), utilizing the runit init system for maximum efficiency. System configured to boot into a headless TTY environment.
 
-Desktop Environment: XFCE (available via startx but not loaded by default).
+Core Workflow: Architected a complete TUI (Text-User Interface) workflow using tmux (session manager) and fbterm (terminal emulator) for a stable, keyboard-driven environment.
 
-Logging Software:
+Application Stack: A curated selection of terminal-based tools to fulfill daily driver and contest needs:
 
-yfktest: (by Fabian Kurz, DJ5CW) A minimal, powerful contest logger written in Perl. It runs directly in the terminal and uses almost no resources.
+Contest/Logging: yfktest, tlf (compiled from source).
 
-tlf: An alternative logger (written in C) to be tested for even greater resource efficiency.
+Daily Use: aerc (Email Client), rbw (Password Manager), w3m (Web Browser), wordgrinder (Word Processor), nnn (File Manager).
 
-Terminal Environment: tmux (terminal multiplexer) is used to create a minimal "dashboard," splitting the screen into multiple terminal instances (e.g., one for the logger, one for system monitoring).
+4. Technical Achievements & Optimization (NFR Validation)
 
-System Monitoring: btop (resource monitor) running in a separate tmux pane.
+This section highlights the success in meeting Non-Functional Requirements (NFRs) through low-level system configuration:
 
-Power Management: TLP (Linux power management utility) running to manage battery and CPU frequency scaling.
+Resource Optimization: Achieved a steady-state power consumption of 5–6 watts, extending battery life for specialized portable operations to over 12 hours. This was validated through BIOS/CPU tuning and running a completely headless TTY environment.
 
-4. Known Issues & Limitations
+Low-Level Integration: Successfully configured acpid to map laptop keys (Sleep, Volume, Mute) to system functions (amixer), demonstrating competence in hardware event handling and system customization.
 
-CAT Control: This is the main unresolved issue.
+Software Customization: Identified specialized logging software (tlf) not available in the minimal repository and successfully compiled the application from source code, demonstrating control over the entire software delivery pipeline.
 
-My EGV-9B transceiver does not support CAT.
+5. Key Technical Challenges & Resolutions
 
-My RGO-ONE transceiver's CAT (TS480 protocol) works perfectly in Windows (with OmniRig) but could not be made to cooperate with Hamlib in Linux, despite multiple attempts. This integration is beyond my current ability and I hope it will be added by the hamlib team.
+System stability required significant low-level troubleshooting:
 
-Workaround: The absence of CAT is a low-priority problem. In yfktest, the band and frequency can be logged manually by typing them into the callsign field. This is an acceptable extra step for an un-assisted, single-band QRP category.
+Service Dependency Debugging: Diagnosed and fixed complex dependency chain issues for services like Bluetooth (dbus -> bluetoothd -> bluez).
 
-5. Field Test 1: Performance Baseline (HF Championship)
+Compiling Dependencies: Solved issues integrating specialized TUI applications (like aerc) with external password management (rbw) to ensure secure, uninterrupted workflow.
 
-Test Setup: Participated in the HF Championship for ~3 hours in the QRP un-assisted category.
+System Fixes: Solved the "corrupted screen" bug on system resume by implementing the tmux refresh-client command, ensuring visual state consistency post-suspend.
 
-Environment: Ran the yfktest logger within a minimal tmux session.
+6. Results & Field Test
 
-Power Settings:
-
-Wi-Fi & Bluetooth: OFF
-
-CPU: Set to "power saving" governor.
-
-Screen Brightness: 20% for the first hour, 10% for the remaining two.
-
-Results (Power Consumption):
-
-Battery went from 50% to 30% in approximately 3 hours.
-
-btop reported a consistent power draw of 5-6 watts.
+Performance Baseline: Confirmed the setup can run for over 12 hours on a full charge, consuming only ~7% of the battery per hour.
 
 Conclusion: This setup can run for over 12 hours on a full charge, consuming only ~7% of the battery per hour. The requirements have been successfully met.
 
-6. Field Test 2: Successfully tested during the SSB IARU 1 Field Day in September 2025. The logger ran FB!
+Successfully tested during the SSB IARU 1 Field Day in September 2025. The logger ran FB!
 
 7. Photos
 
