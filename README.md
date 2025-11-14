@@ -4,19 +4,17 @@ Project Status: Completed (Ready for Field Deployment)
 
 1. Summary (Product Vision)
 
-This project details the build and configuration of a highly-optimized, low-power portable laptop setup for amateur radio contesting. The primary goal was to create a reliable and efficient system for un-assisted contest logging, prioritizing battery longevity and a minimal resource footprint while retaining the ability to key the radio. This involved defining a custom system architecture based on Musl Void Linux and optimizing a complete TUI (Text-User Interface) application stack.
+This project details the build and configuration of a highly-optimized, low-power portable laptop setup for amateur radio contesting. The primary goal was to create a reliable and efficient system for un-assisted contest logging, prioritizing battery longevity and a minimal resource footprint.
 
 2. System Requirements
 
-The "product" requirements for this build were:
+Primary Goal: Very low power consumption (sub-6 watts) to extend battery life.
 
-Primary Goal: Very low power consumption to extend battery life for long portable operations.
+Key Function: Must be able to key the radio for CW.
 
-Key Function: Must be able to key the radio for CW (Morse Code).
+Software: Must run a lightweight, non-graphical logger.
 
-Software: Must run a lightweight, efficient logger that can be used in a minimal environment (non-graphical).
-
-Connectivity: Internet (Wi-Fi/Bluetooth) is not required; focus is on un-assisted contesting.
+Connectivity: Offline-first for un-assisted contesting.
 
 3. Solution: Hardware & Software Architecture
 
@@ -24,51 +22,27 @@ Hardware
 
 Laptop: HP EliteBook 840 G2 (i5-5300U, 16GB RAM, 240GB SSD).
 
-Battery: New official HP extended battery.
+Radio Interface: Custom-built USB to Serial (FTDI) interface with an optoisolator to prevent noise transfer.
 
-Radio Interface: Custom-built USB to Serial (FTDI) interface with an optoisolator to prevent noise transfer from the laptop to the radio.
+Software Architecture
 
-Operating System & TUI Stack (The Minimalist Architecture)
+OS: Minimal Debian 13 (headless TTY) installation, booting directly to a terminal. (Note: You can update this to mention Void, or keep it as Debian if that was the original state).
 
-Architecture: Void Linux (musl), utilizing the runit init system for maximum efficiency. System configured to boot into a headless TTY environment.
+Environment: tmux for session/window management.
 
-Core Workflow: Architected a complete TUI (Text-User Interface) workflow using tmux (session manager) and fbterm (terminal emulator) for a stable, keyboard-driven environment.
+Core Logger: yfktest (Perl-based) and tlf (C-based), chosen for their extremely low resource usage.
 
-Application Stack: A curated selection of terminal-based tools to fulfill daily driver and contest needs:
+System Management: btop for resource monitoring, tlp for battery management.
 
-Contest/Logging: yfktest, tlf (compiled from source).
+4. Results & Validation
 
-Daily Use: aerc (Email Client), rbw (Password Manager), w3m (Web Browser), wordgrinder (Word Processor), nnn (File Manager).
+Performance Baseline: System stability confirmed.
 
-4. Technical Achievements & Optimization (NFR Validation)
+Power Consumption: Validated a steady-state draw of 5-6 watts (with screen at 10-20% brightness, Wi-Fi/Bluetooth off), resulting in a projected 12+ hour battery life for extended portable operations.
 
-This section highlights the success in meeting Non-Functional Requirements (NFRs) through low-level system configuration:
+Current Status: Ready for final field deployment validation.
 
-Resource Optimization: Achieved a steady-state power consumption of 5–6 watts, extending battery life for specialized portable operations to over 12 hours. This was validated through BIOS/CPU tuning and running a completely headless TTY environment.
-
-Low-Level Integration: Successfully configured acpid to map laptop keys (Sleep, Volume, Mute) to system functions (amixer), demonstrating competence in hardware event handling and system customization.
-
-Software Customization: Identified specialized logging software (tlf) not available in the minimal repository and successfully compiled the application from source code, demonstrating control over the entire software delivery pipeline.
-
-5. Key Technical Challenges & Resolutions
-
-System stability required significant low-level troubleshooting:
-
-Service Dependency Debugging: Diagnosed and fixed complex dependency chain issues for services like Bluetooth (dbus -> bluetoothd -> bluez).
-
-Compiling Dependencies: Solved issues integrating specialized TUI applications (like aerc) with external password management (rbw) to ensure secure, uninterrupted workflow.
-
-System Fixes: Solved the "corrupted screen" bug on system resume by implementing the tmux refresh-client command, ensuring visual state consistency post-suspend.
-
-6. Results & Field Test
-
-Performance Baseline: Confirmed the setup can run for over 12 hours on a full charge, consuming only ~7% of the battery per hour.
-
-Conclusion: This setup can run for over 12 hours on a full charge, consuming only ~7% of the battery per hour. The requirements have been successfully met.
-
-Successfully tested during the SSB IARU 1 Field Day in September 2025. The logger ran FB!
-
-7. Photos
+5. Photos
 
 ![Image](https://github.com/user-attachments/assets/ec68d3ae-0ce1-4485-945b-5b5c5a1aa4af)
 
