@@ -1,12 +1,12 @@
-Project: Portable Contest Logging Laptop Setup
+# Project: Portable Contest Logging Laptop Setup
 
 Project Status: Completed (Ready for Field Deployment)
 
-1. Summary (Product Vision)
+## 1. Summary (Product Vision)
 
 This project details the build and configuration of a highly-optimized, low-power portable laptop setup for amateur radio contesting. The primary goal was to create a reliable and efficient system for un-assisted contest logging, prioritizing battery longevity and a minimal resource footprint.
 
-2. System Requirements
+## 2. System Requirements
 
 Primary Goal: Very low power consumption (sub-6 watts) to extend battery life.
 
@@ -16,7 +16,7 @@ Software: Must run a lightweight, non-graphical logger.
 
 Connectivity: Offline-first for un-assisted contesting.
 
-3. Solution: Hardware & Software Architecture
+## 3. Solution: Hardware & Software Architecture
 
 Hardware
 
@@ -34,7 +34,7 @@ Core Logger: yfktest (Perl-based) and tlf (C-based), chosen for their extremely 
 
 System Management: btop for resource monitoring, tlp for battery management.
 
-4. Results & Validation
+## 4. Results & Validation
 
 Performance Baseline: System stability confirmed.
 
@@ -42,7 +42,7 @@ Power Consumption: Validated a steady-state draw of 5-6 watts (with screen at 10
 
 Current Status: Ready for final field deployment validation.
 
-5. Photos
+## 5. Photos
 
 ![Image](https://github.com/user-attachments/assets/ec68d3ae-0ce1-4485-945b-5b5c5a1aa4af)
 
